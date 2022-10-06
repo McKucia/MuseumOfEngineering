@@ -5,7 +5,7 @@ using UnityEngine;
 public class IntersectDetector : MonoBehaviour
 {
     [SerializeField] private Transform intersectionPoint;
-    [SerializeField] private float intersectionPointRadius;
+    [SerializeField] private float sizeX, sizeY, sizeZ;
     [SerializeField] private LayerMask intersectionLayerMask;
     [SerializeField] private InteractionPrompt interactionPrompt;
 
@@ -22,8 +22,10 @@ public class IntersectDetector : MonoBehaviour
 
     void Update()
     {
-        numFound = Physics.OverlapSphereNonAlloc(intersectionPoint.position, intersectionPointRadius, 
-            intersectedObjects, intersectionLayerMask);
+        intersectedObjects = Physics.OverlapBox(intersectionPoint.position, new Vector3(sizeX, sizeY, sizeZ), 
+            Quaternion.identity, intersectionLayerMask);
+
+        numFound = intersectedObjects.Length;
 
         if(numFound > 0)
         {
@@ -46,9 +48,9 @@ public class IntersectDetector : MonoBehaviour
         }
     }
 
-    // void OnDrawGizmos() 
-    // {
-    //     Gizmos.color = Color.red;
-    //     Gizmos.DrawWireSphere(intersectionPoint.position, intersectionPointRadius);
-    // }
+    void OnDrawGizmos() 
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawCube(intersectionPoint.position, new Vector3(sizeX, sizeY, sizeZ));
+    }
 }

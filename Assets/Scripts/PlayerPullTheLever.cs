@@ -21,12 +21,17 @@ public class PlayerPullTheLever : MonoBehaviour
         {
             handIKTarget.position = handTarget.position;
             handIKTarget.rotation = handTarget.rotation;
-            animator.SetTrigger("pullTheLever");
         }
     }
 
     public void Pull()
     {
+        animator.Play("PullTheLever");
         isPulling = true;
+    }
+
+    public void StopPulling()
+    {
+        isPulling = false;
     }
 }
