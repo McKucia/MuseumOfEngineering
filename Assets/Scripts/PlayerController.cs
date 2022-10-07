@@ -46,6 +46,7 @@ public class PlayerController : MonoBehaviour
     private void Move()
     {
         float targetSpeed = inputManager.run ? runSpeed : walkSpeed;
+        Debug.Log(inputManager.jump);
         if(inputManager.move == Vector2.zero) targetSpeed = 0;
 
         currentVelocity.x = Mathf.Lerp(currentVelocity.x, inputManager.move.x * targetSpeed, animationBlendSpeed * Time.fixedDeltaTime);

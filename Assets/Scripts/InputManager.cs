@@ -11,12 +11,14 @@ public class InputManager : MonoBehaviour
     [HideInInspector] public Vector2 move { get; private set; }
     [HideInInspector] public Vector2 look { get; private set; }
     [HideInInspector] public bool run { get; private set; }
+    [HideInInspector] public bool jump { get; private set; }
 
     private InputActionMap actionMap;
     // actions
     private InputAction moveAction;
     private InputAction lookAction;
     private InputAction runAction;
+    private InputAction jumpAction;
 
     private void Awake() 
     {
@@ -26,14 +28,17 @@ public class InputManager : MonoBehaviour
         moveAction = actionMap.FindAction("Move");
         lookAction = actionMap.FindAction("Look");
         runAction = actionMap.FindAction("Run");
+        jumpAction = actionMap.FindAction("Jump");
 
         moveAction.performed += onMove;
         lookAction.performed += onLook;
         runAction.performed += onRun;
+        jumpAction.performed += onJump;
 
         moveAction.canceled += onMove;
         lookAction.canceled += onLook;
         runAction.canceled += onRun;
+        jumpAction.canceled += onJump;
     }
 
     private void HideCursor()
@@ -47,6 +52,8 @@ public class InputManager : MonoBehaviour
     private void onLook(InputAction.CallbackContext context) => look = context.ReadValue<Vector2>();
 
     private void onRun(InputAction.CallbackContext context) => run = context.ReadValueAsButton();
+
+    private void onJump(InputAction.CallbackContext context) => jump = context.ReadValueAsButton();
 
     private void OnEnable() => actionMap.Enable();
     

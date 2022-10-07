@@ -48,9 +48,9 @@ public class IntersectDetector : MonoBehaviour
         }
     }
 
-    void OnDrawGizmos() 
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawCube(intersectionPoint.position, new Vector3(sizeX, sizeY, sizeZ));
-    }
+    // void OnDrawGizmos() 
+    // {
+    //     Gizmos.color = Color.red;
+    //     Gizmos.DrawCube(intersectionPoint.position, new Vector3(sizeX, sizeY, sizeZ));
+    // }
 }
