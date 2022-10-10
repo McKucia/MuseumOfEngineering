@@ -7,7 +7,6 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float animationBlendSpeed = 9f;
-    [SerializeField] private Transform cameraRoot;
     [SerializeField] private Transform playerCamera;
     [SerializeField] private float cameraUpperLimit = -40f;
     [SerializeField] private float cameraBottomLimit = 70f;
@@ -89,22 +88,13 @@ public class PlayerController : MonoBehaviour
 
     private void CameraMovements()
     {
-        var mouseX = inputManager.look.x;
-        var mouseY = inputManager.look.y;
-
-        playerCamera.position = cameraRoot.position;
-
-        rotationX -= mouseY * mouseSensivityX * Time.smoothDeltaTime;
-        rotationX = Mathf.Clamp(rotationX, cameraUpperLimit, cameraBottomLimit);
-
-        playerCamera.localRotation = Quaternion.Euler(rotationX, 0, 0);
-        playerRigidbody.MoveRotation(playerRigidbody.rotation * 
-            Quaternion.Euler(0, mouseX * mouseSensivityY * Time.smoothDeltaTime, 0));
+        playerRigidbody.transform.rotation = Quaternion.AngleAxis(playerCamera.transform.eulerAngles.y, Vector3.up);
     }
 
     private void Jump()
     {
         if(!inputManager.jump) return;
+        if(!isGrounded) return;
         animator.SetTrigger(jumpHash);
         jumpTriggered = true;
     }
