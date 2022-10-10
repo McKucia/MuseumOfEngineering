@@ -7,6 +7,7 @@ public class LeverInteractor : MonoBehaviour, IInteractable
     [SerializeField] private string prompt;
     [SerializeField] private Transform target;
 
+    private GameObject playerPullTheLever;
     private Animator animator;
     private bool isTrigger = false;
     public string interactionPrompt => prompt;
@@ -20,6 +21,10 @@ public class LeverInteractor : MonoBehaviour, IInteractable
     public bool Interact(IntersectDetector interactor)
     {
         isTrigger = !isTrigger;
+
+        var playerPullTheLever = interactor.GetComponent<PlayerPullTheLever>();
+        playerPullTheLever.Pull();
+        
         StartCoroutine(DelayedAnimation());
         
         return true;

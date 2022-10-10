@@ -8,15 +8,13 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float animationBlendSpeed = 9f;
     [SerializeField] private Transform playerCamera;
-    [SerializeField] private float cameraUpperLimit = -40f;
-    [SerializeField] private float cameraBottomLimit = 70f;
-    [SerializeField] private float mouseSensivityX = 40f;
-    [SerializeField] private float mouseSensivityY = 70f;
     [SerializeField] private float jumpFactor;
     [SerializeField] private float groundDistance;
     [SerializeField] private LayerMask groundMask; 
     [SerializeField] private float airResistance = 0.8f;
     [SerializeField] private float gravity;
+
+    public bool canMove { get; set;} = true;
 
     private Rigidbody playerRigidbody;
     private InputManager inputManager;
@@ -51,8 +49,11 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         CheckGround();
-        Move();
-        Jump();
+        if(canMove)
+        {
+            Move();
+            Jump();
+        }
     }
 
     private void LateUpdate()

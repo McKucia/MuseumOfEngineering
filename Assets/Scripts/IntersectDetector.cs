@@ -10,14 +10,12 @@ public class IntersectDetector : MonoBehaviour
     [SerializeField] private InteractionPrompt interactionPrompt;
 
     private Collider[] intersectedObjects;
-    private PlayerPullTheLever playerPullTheLever;
     private int numFound = 0;
     private IInteractable interactable;
 
     void Start()
     {
         intersectedObjects = new Collider[3];
-        playerPullTheLever = GetComponent<PlayerPullTheLever>();
     }
 
     void Update()
@@ -37,7 +35,6 @@ public class IntersectDetector : MonoBehaviour
                 if(Input.GetKeyDown("e"))
                 {
                     interactable.Interact(this);
-                    playerPullTheLever.Pull();
                 }
             }
         }
