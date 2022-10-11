@@ -21,7 +21,7 @@ public class InteractionPrompt : MonoBehaviour
     void LateUpdate()
     {
         if(!isDisplayed) return;
-        var rotation = playerCamera.transform.rotation;
+        var rotation = Quaternion.AngleAxis(playerCamera.transform.eulerAngles.y, Vector3.up);
         transform.LookAt(transform.position + rotation * Vector3.forward, rotation * Vector3.up);
     }
 

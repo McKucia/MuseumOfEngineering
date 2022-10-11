@@ -7,8 +7,8 @@ public class IntersectDetector : MonoBehaviour
     [SerializeField] private Transform intersectionPoint;
     [SerializeField] private float sizeX, sizeY, sizeZ;
     [SerializeField] private LayerMask intersectionLayerMask;
-    [SerializeField] private InteractionPrompt interactionPrompt;
-
+    
+    private InteractionPrompt interactionPrompt;
     private Collider[] intersectedObjects;
     private int numFound = 0;
     private IInteractable interactable;
@@ -31,6 +31,7 @@ public class IntersectDetector : MonoBehaviour
 
             if(interactable != null)
             {
+                interactionPrompt = intersectedObjects[0].transform.GetChild(0).GetComponent<InteractionPrompt>();
                 if(!interactionPrompt.isDisplayed) interactionPrompt.SetUp(interactable.interactionPrompt);
                 if(Input.GetKeyDown("e"))
                 {
@@ -41,7 +42,7 @@ public class IntersectDetector : MonoBehaviour
         else
         {
             if(interactable != null) interactable = null;
-            if(interactionPrompt.isDisplayed) interactionPrompt.Close();
+            if(interactionPrompt && interactionPrompt.isDisplayed) interactionPrompt.Close();
         }
     }
 
