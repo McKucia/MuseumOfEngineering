@@ -8,8 +8,9 @@ public class LeverInteractor : MonoBehaviour, IInteractable
     [SerializeField] private Transform target;
     [SerializeField] private GameObject playerCamera;
     [SerializeField] private GameObject leverCamera;
+    [SerializeField] private PlayerController playerController;
+    [SerializeField] private PlayerPullTheLever playerPullTheLever;
 
-    private GameObject playerPullTheLever;
     private Animator animator;
     private bool isTrigger = false;
     public string interactionPrompt => prompt;
@@ -22,13 +23,12 @@ public class LeverInteractor : MonoBehaviour, IInteractable
 
     public bool Interact(IntersectDetector interactor)
     {
-        interactor.GetComponent<PlayerController>().canMove = false;
+        playerController.canMove = false;
         isTrigger = !isTrigger;
 
         playerCamera.SetActive(false);
         leverCamera.SetActive(true);
 
-        var playerPullTheLever = interactor.GetComponent<PlayerPullTheLever>();
         playerPullTheLever.Pull();
         
         StartCoroutine(DelayedAnimation());

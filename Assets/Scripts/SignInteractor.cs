@@ -8,6 +8,7 @@ public class SignInteractor : MonoBehaviour, IInteractable
     [SerializeField] private Transform target;
     [SerializeField] private GameObject playerCamera;
     [SerializeField] private GameObject signCamera;
+    [SerializeField] private PlayerController playerController;
 
     private bool isTrigger = false;
     public Transform handTarget { get; }
@@ -15,7 +16,7 @@ public class SignInteractor : MonoBehaviour, IInteractable
 
     public bool Interact(IntersectDetector interactor)
     {
-        interactor.GetComponent<PlayerController>().canMove = isTrigger;
+        playerController.canMove = isTrigger;
         isTrigger = !isTrigger;
         
 		playerCamera.SetActive(!isTrigger);

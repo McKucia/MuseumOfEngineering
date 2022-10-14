@@ -20,18 +20,18 @@ public class IntersectDetector : MonoBehaviour
 
     void Update()
     {
-        intersectedObjects = Physics.OverlapBox(intersectionPoint.position, new Vector3(sizeX, sizeY, sizeZ), 
+        intersectedObjects = Physics.OverlapBox(intersectionPoint.position, new Vector3(sizeX / 2, sizeY / 2, sizeZ / 2), 
             Quaternion.identity, intersectionLayerMask);
 
         numFound = intersectedObjects.Length;
 
         if(numFound > 0)
         {
-            interactable = intersectedObjects[0].GetComponent<IInteractable>();
+            interactable = GetComponent<IInteractable>();
 
             if(interactable != null)
             {
-                interactionPrompt = intersectedObjects[0].transform.GetChild(0).GetComponent<InteractionPrompt>();
+                interactionPrompt = transform.GetChild(0).GetComponent<InteractionPrompt>();
                 if(!interactionPrompt.isDisplayed) interactionPrompt.SetUp(interactable.interactionPrompt);
                 if(Input.GetKeyDown("e"))
                 {
