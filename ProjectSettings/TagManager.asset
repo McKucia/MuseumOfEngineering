@@ -7,6 +7,7 @@ TagManager:
   - CinemachineTarget
   - PlayerCamera
   - SignCamera
+  - LeverCamera
   layers:
   - Default
   - TransparentFX
