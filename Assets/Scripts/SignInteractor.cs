@@ -14,7 +14,7 @@ public class SignInteractor : MonoBehaviour, IInteractable
     public Transform handTarget { get; }
     public string interactionPrompt => prompt;
 
-    public bool Interact(IntersectDetector interactor)
+    public bool Interact()
     {
         playerController.canMove = isTrigger;
         isTrigger = !isTrigger;

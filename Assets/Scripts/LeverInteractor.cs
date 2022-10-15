@@ -8,6 +8,7 @@ public class LeverInteractor : MonoBehaviour, IInteractable
     [SerializeField] private Transform target;
     [SerializeField] private GameObject playerCamera;
     [SerializeField] private GameObject leverCamera;
+    [SerializeField] private GameObject performerObject;
     [SerializeField] private PlayerController playerController;
     [SerializeField] private PlayerPullTheLever playerPullTheLever;
 
@@ -21,7 +22,7 @@ public class LeverInteractor : MonoBehaviour, IInteractable
         animator = GetComponent<Animator>();
     }
 
-    public bool Interact(IntersectDetector interactor)
+    public bool Interact()
     {
         playerController.canMove = false;
         isTrigger = !isTrigger;
@@ -40,5 +41,7 @@ public class LeverInteractor : MonoBehaviour, IInteractable
     {
         yield return new WaitForSeconds(0.8f);
         animator.SetBool("isTrigger", isTrigger);
+
+        performerObject.GetComponent<IPerformer>().Perform();
     }
 }

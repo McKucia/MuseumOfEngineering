@@ -7,5 +7,5 @@ public interface IInteractable
     public string interactionPrompt { get; }
     public Transform handTarget { get; }
     
-    public bool Interact(IntersectDetector interactor);
+    public bool Interact();
 }

@@ -35,7 +35,7 @@ public class IntersectDetector : MonoBehaviour
                 if(!interactionPrompt.isDisplayed) interactionPrompt.SetUp(interactable.interactionPrompt);
                 if(Input.GetKeyDown("e"))
                 {
-                    interactable.Interact(this);
+                    interactable.Interact();
                 }
             }
         }
