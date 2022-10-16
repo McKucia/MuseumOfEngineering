@@ -9,6 +9,7 @@ public class TrainPerformer : MonoBehaviour, IPerformer
     [SerializeField] private float acceleration;
     [SerializeField] private Transform teleport;
 
+    private ParticleSystem smokeParticleSystem;
     private Animator animator;
     private bool isRiding = false;
     private int velocityHash;
@@ -16,6 +17,7 @@ public class TrainPerformer : MonoBehaviour, IPerformer
     private void Start()
     {
         animator = GetComponent<Animator>();
+        smokeParticleSystem = transform.Find("Smoke").GetComponent<ParticleSystem>();
 
         velocityHash = Animator.StringToHash("trainVelocity");
     }
@@ -32,6 +34,12 @@ public class TrainPerformer : MonoBehaviour, IPerformer
     {
         isRiding = !isRiding;
         animator.SetBool("isRiding", isRiding);
+
+        if(isRiding) smokeParticleSystem.Play();
+        else smokeParticleSystem.Stop();
+
+        ParticleSystem.EmissionModule emisionModule = smokeParticleSystem.emission;
+        emisionModule.enabled = isRiding;
     }
 
     private void Move()
