@@ -40,6 +40,7 @@ public class IntersectDetector : MonoBehaviour
             return;
         }
 
+
         RaycastHit hit;
         bool hited = Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out hit, rayLength, rayLayerMask);
         if(!hited) 
@@ -48,8 +49,10 @@ public class IntersectDetector : MonoBehaviour
             return;
         }
 
+
         if(hit.collider.gameObject == intersectedObjects[0].transform.parent.gameObject)
         {
+            Debug.Log("no i git");
             interactable = hit.collider.GetComponent<IInteractable>();
             if(interactable != null)
             {
