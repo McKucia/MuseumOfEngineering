@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SignInteractor : MonoBehaviour, IInteractable
 {
     [SerializeField] private string prompt;
+    [SerializeField] private Sprite sprite;
     [SerializeField] private Transform target;
     [SerializeField] private GameObject playerCamera;
     [SerializeField] private GameObject signCamera;
@@ -13,6 +15,7 @@ public class SignInteractor : MonoBehaviour, IInteractable
     private bool isTrigger = false;
     public Transform handTarget { get; }
     public string interactionPrompt => prompt;
+    public Sprite interactionSprite => sprite;
 
     public bool Interact()
     {

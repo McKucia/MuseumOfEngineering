@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LeverInteractor : MonoBehaviour, IInteractable
 {
     [SerializeField] private string prompt;
+    [SerializeField] private Sprite sprite;
     [SerializeField] private Transform target;
     [SerializeField] private GameObject playerCamera;
     [SerializeField] private GameObject leverCamera;
@@ -16,6 +18,7 @@ public class LeverInteractor : MonoBehaviour, IInteractable
     private bool isTrigger = false;
     public string interactionPrompt => prompt;
     public Transform handTarget => target;
+    public Sprite interactionSprite => sprite;
 
     void Start()
     {
