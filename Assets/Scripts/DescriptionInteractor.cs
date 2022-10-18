@@ -17,7 +17,6 @@ public class DescriptionInteractor : MonoBehaviour, IInteractable
 
     public bool Interact()
     {
-        Debug.Log("smth");
         isDisplayed = !isDisplayed;
         canvas.SetActive(isDisplayed);
         return true;

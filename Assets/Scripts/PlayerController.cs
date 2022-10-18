@@ -26,7 +26,6 @@ public class PlayerController : MonoBehaviour
     private int fallingHash;
     private int groundedHash;
     private bool isGrounded;
-    private bool jumpTriggered;
 
     private const float runSpeed = 5f;
     private const float walkSpeed = 1.5f;
@@ -67,7 +66,7 @@ public class PlayerController : MonoBehaviour
         
         if(inputManager.move == Vector2.zero) targetSpeed = 0;
 
-        if(isGrounded && !jumpTriggered)
+        if(isGrounded)
         {
             currentVelocity.x = Mathf.Lerp(currentVelocity.x, inputManager.move.x * targetSpeed, animationBlendSpeed * Time.fixedDeltaTime);
             currentVelocity.y = Mathf.Lerp(currentVelocity.y, inputManager.move.y * targetSpeed, animationBlendSpeed * Time.fixedDeltaTime);
@@ -96,18 +95,17 @@ public class PlayerController : MonoBehaviour
     {
         if(!inputManager.jump) return;
         if(!isGrounded) return;
+        if(animator.GetCurrentAnimatorStateInfo(0).IsName("Jump")) return;
+
         animator.SetTrigger(jumpHash);
-        jumpTriggered = true;
     }
 
     private void CheckGround()
     {
         RaycastHit hit;
-        Debug.DrawRay(playerRigidbody.worldCenterOfMass, transform.TransformDirection(Vector3.down) * 1000, Color.yellow);
 
         if(Physics.Raycast(playerRigidbody.worldCenterOfMass, Vector3.down, out hit, groundDistance + 0.1f, groundMask))
         {
-            Debug.DrawRay(playerRigidbody.worldCenterOfMass, transform.TransformDirection(Vector3.down) * hit.distance, Color.red);
             isGrounded = true;
             animator.SetBool(fallingHash, !isGrounded);
             animator.SetBool(groundedHash, isGrounded);
@@ -126,6 +124,5 @@ public class PlayerController : MonoBehaviour
         playerRigidbody.AddForce(-playerRigidbody.velocity.y * Vector3.up, ForceMode.VelocityChange);
         playerRigidbody.AddForce(Vector3.up * jumpFactor, ForceMode.Impulse);
         animator.ResetTrigger(jumpHash);
-        jumpTriggered = false;
     }
 }
