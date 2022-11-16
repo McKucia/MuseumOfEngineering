@@ -20,12 +20,16 @@ public class LeverInteractor : MonoBehaviour, IInteractable
     public Transform handTarget => target;
     public Sprite interactionSprite => sprite;
 
-    void Start()
+    void Awake()
     {
         animator = GetComponent<Animator>();
     }
 
-    public bool Interact()
+    public void SetHover(bool isHover)
+    {
+    }
+
+    public void Interact()
     {
         playerController.canMove = false;
         isTrigger = !isTrigger;
@@ -36,8 +40,10 @@ public class LeverInteractor : MonoBehaviour, IInteractable
         playerPullTheLever.Pull();
         
         StartCoroutine(DelayedAnimation());
-        
-        return true;
+    }
+
+    public void Reset()
+    {
     }
     
     IEnumerator DelayedAnimation()

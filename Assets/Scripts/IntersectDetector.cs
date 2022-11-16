@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 using UnityEngine.UI;
 using TMPro;
 
@@ -19,8 +20,9 @@ public class IntersectDetector : MonoBehaviour
     
     private IInteractable interactable;
     private Image crosshairImage;
-     private Collider[] intersectedObjects;
-     private int numFound = 0;
+    private Collider[] intersectedObjects;
+    private int numFound = 0;
+    private GameObject hitedObject;
 
     void Start()
     {
@@ -40,7 +42,6 @@ public class IntersectDetector : MonoBehaviour
             return;
         }
 
-
         RaycastHit hit;
         bool hited = Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out hit, rayLength, rayLayerMask);
         if(!hited) 
@@ -49,38 +50,45 @@ public class IntersectDetector : MonoBehaviour
             return;
         }
 
+        hitedObject = hit.collider.gameObject;
 
-        if(hit.collider.gameObject == intersectedObjects[0].transform.parent.gameObject)
+        if(Array.Exists(intersectedObjects, element => element.transform.parent.gameObject == hitedObject)) //hitedObject == intersectedObjects[0].transform.parent.gameObject)
         {
-            Debug.Log("no i git");
-            interactable = hit.collider.GetComponent<IInteractable>();
+            interactable = hitedObject.GetComponent<IInteractable>();
             if(interactable != null)
             {
-                prompt.SetActive(true);
-                if(interactable.interactionSprite)
-                    promptImage.sprite = interactable.interactionSprite;
-                else
-                    promptImage.sprite = defaultSprite;
-                promptText.text = interactable.interactionPrompt;
-                if(Input.GetKeyDown("e"))
-                {
-                    interactable.Interact();
-                }
+                var outline = hitedObject.GetComponent<Outline>();
+                outline.enabled = true;
+                // prompt.SetActive(true);
+                // if(interactable.interactionSprite)
+                //     promptImage.sprite = interactable.interactionSprite;
+                // else
+                //     promptImage.sprite = defaultSprite;
+                // promptText.text = interactable.interactionPrompt;
+                // if(Input.GetKeyDown("e"))
+                // {
+                //     interactable.Interact();
+                // }
             }
         }
     }
 
     void ResetPrompt()
     {
-        prompt.SetActive(false);
-        promptImage.sprite = null;
-        promptText.text = "";
+        if(hitedObject != null)
+        {
+            hitedObject.GetComponent<Outline>().enabled = false;
+            hitedObject = null;
+        }
+        // prompt.SetActive(false);
+        // promptImage.sprite = null;
+        // promptText.text = "";
         if(interactable != null) interactable = null;
     }
 
-    void OnDrawGizmos() 
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawCube(intersectionPoint.position, new Vector3(sizeX, sizeY, sizeZ));
-    }
+    // void OnDrawGizmos() 
+    // {
+    //     Gizmos.color = Color.red;
+    //     Gizmos.DrawCube(intersectionPoint.position, new Vector3(sizeX, sizeY, sizeZ));
+    // }
 }

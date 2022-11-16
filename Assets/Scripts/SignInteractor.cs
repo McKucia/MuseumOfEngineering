@@ -17,14 +17,20 @@ public class SignInteractor : MonoBehaviour, IInteractable
     public string interactionPrompt => prompt;
     public Sprite interactionSprite => sprite;
 
-    public bool Interact()
+    public void SetHover(bool isHover)
+    {
+    }
+
+    public void Interact()
     {
         playerController.canMove = isTrigger;
         isTrigger = !isTrigger;
         
 		playerCamera.SetActive(!isTrigger);
         signCamera.SetActive(isTrigger);
-        
-        return true;
+    }
+
+    public void Reset()
+    {
     }
 }

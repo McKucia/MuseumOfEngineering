@@ -6,7 +6,17 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Animator))]
 public class PlayerController : MonoBehaviour
 {
+    [Header("Cinemachine")]
+	[SerializeField] private GameObject cinemachineCameraTarget;
+	[SerializeField] private float topClamp = 90.0f;
+	[SerializeField] private float bottomClamp = -90.0f;
+    private const float threshold = 0.01f;
+    private float cinemachineTargetPitch;
+	private float rotationVelocity;
+    [SerializeField] private float rotationSpeed = 1.0f;
+
     [SerializeField] private float animationBlendSpeed = 9f;
+    [SerializeField] private float cameraPositionChangeSpeed = 9f;
     [SerializeField] private Transform playerCamera;
     [SerializeField] private float jumpFactor;
     [SerializeField] private float groundDistance;
@@ -55,9 +65,16 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
+	{
+		if (lfAngle < -360f) lfAngle += 360f;
+		if (lfAngle > 360f) lfAngle -= 360f;
+		return Mathf.Clamp(lfAngle, lfMin, lfMax);
+	}
+
     private void LateUpdate()
     {
-        CameraMovements();
+        CameraRotation();
     }
     
     private void Move()
@@ -82,14 +99,32 @@ public class PlayerController : MonoBehaviour
             playerRigidbody.AddForce(-Vector3.up * gravity);
         }
 
+        var cameraLocalPosition = cinemachineCameraTarget.transform.localPosition;
+        float targetCameraOffset = 0.15f;
+
+        if(inputManager.move != Vector2.zero) {
+            targetCameraOffset = inputManager.run ? 0.6f : 0.35f;
+        }
+
+        var targetCameraPosZ = Mathf.Lerp(cameraLocalPosition.z, targetCameraOffset, cameraPositionChangeSpeed * Time.fixedDeltaTime);
+        cinemachineCameraTarget.transform.localPosition = new Vector3(cameraLocalPosition.x, cameraLocalPosition.y, targetCameraPosZ);
+
         animator.SetFloat(velocityXHash, currentVelocity.x);
         animator.SetFloat(velocityYHash, currentVelocity.y);
     }
 
-    private void CameraMovements()
-    {
-        playerRigidbody.transform.rotation = Quaternion.AngleAxis(playerCamera.transform.eulerAngles.y, Vector3.up);
-    }
+    private void CameraRotation()
+	{
+		if (inputManager.look.sqrMagnitude >= threshold)
+		{	
+			cinemachineTargetPitch -= inputManager.look.y * rotationSpeed;
+			rotationVelocity = inputManager.look.x * rotationSpeed;
+			cinemachineTargetPitch = ClampAngle(cinemachineTargetPitch, bottomClamp, topClamp);
+			cinemachineCameraTarget.transform.localRotation = Quaternion.Euler(cinemachineTargetPitch, 0.0f, 0.0f);
+			// rotate the player left and right
+			transform.Rotate(Vector3.up * rotationVelocity);
+		}
+	}
 
     private void Jump()
     {
