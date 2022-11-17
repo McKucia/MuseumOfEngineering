@@ -11,10 +11,21 @@ public class CursorHoverDetector : MonoBehaviour
     
 	private GameObject hitedObject;
     private IInteractable interactable;
+    private bool isInteracting = false;
 
 
     void LateUpdate()
     {
+        if(isInteracting)
+        {
+            if(Input.GetKeyDown("e"))
+            {
+                interactable.Interact();
+                isInteracting = false;
+            }
+            else return;
+        }
+
         RaycastHit hit;
         bool hited = Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out hit, rayLength, rayLayerMask);
 
@@ -36,7 +47,11 @@ public class CursorHoverDetector : MonoBehaviour
         if(interactable != null)
         {
             interactable.SetHover(true);
-            if(Input.GetKeyDown("e")) interactable.Interact();
+            if(Input.GetKeyDown("e"))
+            {
+                interactable.Interact();
+                isInteracting = true;
+            }
         }
 		else
 		{

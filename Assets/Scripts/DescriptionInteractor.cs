@@ -8,6 +8,10 @@ public class DescriptionInteractor : MonoBehaviour, IInteractable
 {
     [SerializeField] private string prompt;
     [SerializeField] private GameObject canvas;
+    [SerializeField] private GameObject descriptionCamera;
+    [SerializeField] private GameObject playerCamera;
+    [SerializeField] private PlayerController playerController;
+    [SerializeField] private GameObject crosshair;
 
     public Transform handTarget { get; }
     public Sprite interactionSprite { get; }
@@ -28,14 +32,25 @@ public class DescriptionInteractor : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        Debug.Log("interakt");
+        playerController.canMove = isDisplayed;
         isDisplayed = !isDisplayed;
         canvas.SetActive(isDisplayed);
+        SetCursorActive();
+        
+		playerCamera.SetActive(!isDisplayed);
+        descriptionCamera.SetActive(isDisplayed);
     }
 
     public void Reset()
     {
         isDisplayed = false;
         canvas.SetActive(isDisplayed);
+    }
+
+    private void SetCursorActive()
+    {
+        crosshair.SetActive(!isDisplayed);
+        Cursor.visible = isDisplayed;
+        Cursor.lockState = isDisplayed ? CursorLockMode.Confined : CursorLockMode.Locked;
     }
 }
